@@ -1,0 +1,78 @@
+1)
+
+SELECT course.title FROM course, takes WHERE course.course_id = takes.course_id AND takes.semester='Fall' AND takes.year=2009 
+UNION 
+SELECT  course.title FROM course, takes WHERE course.course_id = takes.course_id AND takes.semester='Spring' AND takes.year=2010;
+
+2)
+
+SELECT course.title FROM course, takes WHERE course.course_id = takes.course_id AND takes.semester='Fall' AND takes.year=2009 
+INTERSECT 
+SELECT  course.title FROM course, takes WHERE course.course_id = takes.course_id AND takes.semester='Spring' AND takes.year=2010;
+
+3)
+
+SELECT course.title FROM course, takes WHERE course.course_id = takes.course_id AND takes.semester='Fall' AND takes.year=2009 
+MINUS
+SELECT  course.title FROM course, takes WHERE course.course_id = takes.course_id AND takes.semester='Spring' AND takes.year=2010;
+
+4)
+
+SELECT course.title FROM course WHERE course.course_id 
+NOT IN 
+(SELECT takes.course_id FROM takes);
+
+5)
+
+SELECT course.title FROM course WHERE course.title 
+IN 
+(SELECT course.title FROM course, takes WHERE course.course_id = takes.course_id AND takes.semester='Fall' AND takes.year=2009 
+INTERSECT 
+SELECT course.title FROM course, takes WHERE course.course_id = takes.course_id AND takes.semester='Spring' AND takes.year=2010);
+
+6)
+SELECT COUNT(DISTINCT id) FROM takes WHERE takes.course_id 
+IN 
+(SELECT course_id FROM teaches WHERE id = 10101);
+
+7)
+SELECT course.title FROM course, takes WHERE course.course_id = takes.course_id AND takes.semester='Fall' AND takes.year=2009 AND course.course_id 
+NOT IN 
+(SELECT course.course_id FROM course, takes WHERE course.course_id = takes.course_id AND takes.semester='Spring' AND takes.year=2010);
+
+8)
+SELECT student.name FROM student WHERE student.name IN (SELECT instructor.name FROM instructor);
+
+9)
+
+SELECT instructor.name FROM instructor WHERE instructor.salary 
+> SOME
+(SELECT instructor.salary FROM instructor WHERE instructor.dept_name='Biology');
+
+10)
+
+SELECT instructor.name FROM instructor WHERE instructor.salary 
+> ALL
+(SELECT instructor.salary FROM instructor WHERE instructor.dept_name='Biology');
+
+11)
+
+SELECT AVG(instructor.salary) FROM instructor GROUP BY instructor.dept_name 
+HAVING AVG(instructor.salary) >= ALL (SELECT AVG(instructor.salary) FROM instructor GROUP BY instructor.dept_name);
+
+12)
+
+ SELECT department.budget FROM department WHERE department.budget <= SOME(SELECT AVG(instructor.salary) FROM instructor );
+
+13)
+
+SELECT DISTINCT S.course_id FROM section S WHERE S.semester='Fall' AND S.year=2009 AND EXISTS(SELECT * FROM section T WHERE S.course_id = T.course_id AND T.semester='Spring' AND T.year=2010);
+
+14)
+
+SELECT student.name FROM student WHERE 
+
+15)
+
+SELECT t.course_id FROM section t WHERE UNIQUE(SELECT r.course_id FROM section r WHERE t.course_id = r.course_id AND r.year = 2009);
+
