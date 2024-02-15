@@ -1,0 +1,47 @@
+1) SELECT COUNT(*), course_id FROM student NATURAL JOIN course  GROUP BY course_id;
+
+2)SELECT count(*), dept_name FROM student GROUP BY dept_name HAVING count(*) >= 1;
+
+3) SELECT count(*), dept_name FROM course GROUP BY dept_name;
+
+4) SELECT dept_name, AVG(salary) FROM instructor GROUP BY dept_name HAVING AVG(salary)
+>= 40000;
+
+5)  SELECT COUNT(sec_id) FROM takes WHERE year=2009 AND semester='Spring' GROUP BY sec_id;
+
+6) SELECT course_id, prereq_id FROM prereq ORDER BY course_id;
+
+7) SELECT name, salary FROM instructor ORDER BY salary DESC;
+
+8) SELECT MAX(dept_sal) FROM (SELECT SUM(salary) AS dept_sal, dept_name FROM instructor GROUP BY dept_name);
+
+9) SELECT dept_name, avg_salary FROM (select dept_name, avg(salary) AS avg_salary FROM instructor GROUP BY dept_name) WHERE avg_salary >= 40000;
+
+10) SELECT MAX(c) FROM (SELECT COUNT(sec_id) AS c FROM takes WHERE year=2009 AND semester='Spring' GROUP BY sec_id)
+
+11) SQL> SELECT DISTINCT I.name
+  2  FROM Instructor I
+  3  WHERE NOT EXISTS (
+  4      SELECT S.ID
+  5      FROM Student S
+  6      WHERE S.dept_name = 'Comp. Sci.' AND NOT EXISTS (
+  7          SELECT T.course_id
+  8          FROM Takes T
+  9          WHERE T.ID = S.ID AND EXISTS (
+ 10              SELECT Te.course_id
+ 11              FROM Teaches Te
+ 12              WHERE Te.id = I.ID AND Te.course_id = T.course_id
+ 13          )
+ 14      )
+ 15  );
+
+12)  SELECT dept_name, count, avg_sal FROM
+  2  ( SELECT COUNT(*) AS count, dept_name FROM instructor GROUP BY dept_name HAVING COUNT(*) >1) NATURAL JOIN
+  3  ( SELECT AVG(salary) AS avg_sal, dept_name FROM instructor GROUP BY dept_name HAVING AVG(salary) >= 50000);
+
+
+13) WITH max_sal_table AS (SELECT MAX(budget) AS max_sal FROM department) SELECT dept_name FROM department, max_sal_table WHERE budget = max_sal_table.max_sal;
+
+14)  WITH avg_sal_table(av) AS (SELECT AVG(avg_sal) FROM (sum(salary) AS avg_sal FROM instructor GROUP BY dept_name) ) SELECT SUM(salary) FROM instructor, avg_sal_table GROUP BY dept_name HAVING SUM(salary) >= (SELECT av FROM avg_sal_table);
+
+15) 
