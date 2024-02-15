@@ -1,0 +1,88 @@
+EMPLOYEE(Fname, Minit, Lname, Bdate, Address, Salary, Sex, SSN, Dno , Super_ssn)
+
+WORKS_ON(Hours, Project_No, SSN)
+
+DEPENDENT(Name, Sex, Bdate, Relationship, SSN)
+
+DEPARTMENT(DName, DNumber, Mgr_SSN, Mgr_Start_Date)
+DEPARTMENT_LOCATIONS(DNumber, Location)
+
+PROJECT(Pname, PNumber, PLocation, DNumber)
+
+1) 
+SELECT bdate, address FROM employee WHERE fname='John' AND minit='B' AND lname='Smith';
+SELECT fname, address FROM employee NATURAL JOIN department WHERE Dname='Research';
+
+2) 
+SELECT lname, address, bdate, dnumber FROM employee, department, project WHERE employee.ssn = department.mgr_ssn AND plocation='Stafford' AND project.dnum=department.dnumber;
+
+3)
+SELECT emp.fname, emp.lname, super.fname, super.lname 
+FROM employee AS emp, employee AS super 
+WHERE emp.super_ssn = super.ssn;
+
+4)
+SELECT DISTINCT pno
+FROM works_on, project, employee
+WHERE lname='Smith' AND works_on.essn= employee.ssn;
+
+5)
+SELECT 1.1*salary, fname, lname
+FROM employee, project, works_on
+WHERE employee.ssn=works_on.essn AND works_on.pno=project.pnumber AND project.pname='ProductX'; 
+
+6) 
+SELECT fname, lname, pno
+FROM employee emp, works_on works, department dept
+WHERE emp.ssn = works.essn AND emp.dno=dept.DNumber 
+ORDER BY dept.dname, emp.lname, emp.fname; 
+
+7)
+SELECT fname, lname
+FROM employee emp, dependent dep
+WHERE emp.ssn = dep.essn AND emp.sex=dep.sex AND emp.fname=dep.dependent_name;
+
+8)
+SELECT fname, lname
+FROM employee emp
+WHERE emp.ssn NOT IN (SELECT essn FROM dependent);
+
+9)
+SELECT fname, lname
+FROM employee emp, department dept
+WHERE emp.ssn = dept.mgr_ssn AND emp.ssn IN (SELECT essn FROM dependent);
+
+10)
+SELECT SUM(salary), AVG(salary), MAX(salary), MIN(salary)
+FROM employee;
+
+11)
+SELECT pno, COUNT(*), Pname
+FROM employee, works_on, project
+WHERE employee.ssn = works_on.essn AND works_on.pno=project.pnumber
+GROUP BY pno, pname;
+
+12) 
+SELECT pno, pname, COUNT(*)
+FROM employee, works_on, project
+WHERE employee.ssn = works_on.essn AND works_on.pno = project.pnumber
+GROUP BY pno, pname
+HAVING COUNT(*) > 2;
+
+13)
+SELECT COUNT(*), Dnumber
+FROM employee, department
+WHERE employee.dno=department.dnumber AND employee.salary>40000
+GROUP BY DNumber
+HAVING COUNT(*) >=5;
+
+14)
+SELECT DISTINCT fname, lname
+FROM employee, department
+WHERE employee.dno =  5;
+
+15)
+SELECT fname
+FROM employee, department
+WHERE employee.salary >= 
+	SOME(SELECT salary FROM employee, department WHERE employee.dno=department.
