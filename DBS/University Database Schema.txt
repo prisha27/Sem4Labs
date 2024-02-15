@@ -1,0 +1,13 @@
+University Database Schema:
+Student (ID, name,dept_name, tot_cred)
+Instructor(ID, name, dept_name, salary)
+Course (Course_id, title,dept_name, credits)
+Takes (ID, course_id, sec_id, semester, year, grade)
+Classroom (building, room_number, capacity)
+Department (dept_name, building, budget)
+Section (course_id, section_id, semester, year, building, room_number, time_slot_id)
+Teaches (id, course_id, section_id, semester, year)
+Advisor(s_id, i_id)
+Time_slot (time_slot_id, day, start_time, end_time)
+Prereq (course_id, prereq_id)
+

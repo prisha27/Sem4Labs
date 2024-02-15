@@ -1,0 +1,10 @@
+EMPLOYEE(Fname, Minit, Lname, Bdate, Address, Salary, Sex, SSN, Dept_No, Supervisor_SSN)
+
+WORKS_ON(Hours, Pno, Essn)
+
+DEPENDENT(Dependent_name, Sex, Bdate, Relationship, essn)
+
+DEPARTMENT(DName, DNumber, Mgr_SSN, Mgr_Start_Date)
+DEPARTMENT_LOCATIONS(Dept_No, Location)
+
+PROJECT(Pname, Pnumber, Plocation, Dnum)
