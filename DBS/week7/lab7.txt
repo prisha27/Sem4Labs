@@ -1,0 +1,183 @@
+create table studentTable (
+	RollNo	number,
+	GPA	number(3, 2)
+);
+
+insert into studentTable values(1, 5.8);
+insert into studentTable values(2, 6.5);
+insert into studentTable values(3, 3.4);
+insert into studentTable values(4, 7.8);
+insert into studentTable values(5, 9.5); 
+
+
+1. DECLARE
+   roll_no studentTable.RollNo%Type;
+   agpa studentTable.GPA%Type;
+   begin
+   roll_no := &RollNo;
+   select gpa into agpa from studentTable where roll_no=RollNo;
+   dbms_output.put_line('gpa' ||TO_CHAR(agpa));
+   end;
+   /
+
+2. DECLARE 
+   roll_no studentTable.RollNo%Type;
+   agpa studentTable.GPA%Type;
+   begin
+   roll_no := &RollNo;
+   select gpa into agpa from studentTable where roll_no=RollNo;
+   if agpa < 4 THEN
+dbms_output.put_line('Grade: F');
+ELSIF AgPA >= 4 AND Agpa < 5 THEN
+		dbms_output.put_line('Grade: E');
+	ELSIF agpa >= 5 AND agpa < 6 THEN
+		dbms_output.put_line('Grade: D');
+	ELSIF agpa >= 6 AND agpa < 7 THEN
+		dbms_output.put_line('Grade: C');
+	ELSIF agpa >= 7 AND agpa < 8 THEN
+		dbms_output.put_line('Grade: B');
+	ELSIF agpa >= 8 AND agpa < 9 THEN
+		dbms_output.put_line('Grade: A');
+	ELSIF agpa >= 9 THEN
+		dbms_output.put_line('Grade: A+');
+	END IF;
+   END;
+   /
+
+3.
+DECLARE
+issuedate char(10);
+returndate char(10);
+days number;
+
+begin 
+issuedate := '&issuedate';
+returndate := '&returndate';
+days := to_date(returndate, 'YYYY-MM-DD') - to_date(issuedate, 'YYYY-MM-DD');
+if days <=7 then
+ dbms_output.put_line('No fine');
+ELSIF days >= 8 AND days <= 15 THEN
+		dbms_output.put_line('Fine: Rs. ' || (days - 7));
+ELSIF days >= 16 AND days <= 30 THEN
+		dbms_output.put_line('Fine: Rs. ' || (8 + 2*(days-15)));
+ELSE
+		dbms_output.put_line('Fine: Rs. ' || (38 + 5*(days-29)));
+	END IF; 
+   END;
+   / 
+
+4. DECLARE
+     roll_no studentTable.RollNo%Type;
+    agpa studentTable.GPA%Type;
+   begin
+   for roll_no in 1..5 LOOP
+  select gpa into agpa from studentTable where roll_no=RollNo;
+     if agpa < 4 THEN
+    dbms_output.put_line('Grade: F');
+    ELSIF AgPA >= 4 AND Agpa < 5 THEN
+              dbms_output.put_line('Grade: E');
+      ELSIF agpa >= 5 AND agpa < 6 THEN
+            dbms_output.put_line('Grade: D');
+     ELSIF agpa >= 6 AND agpa < 7 THEN
+             dbms_output.put_line('Grade: C');
+     ELSIF agpa >= 7 AND agpa < 8 THEN
+              dbms_output.put_line('Grade: B');
+     ELSIF agpa >= 8 AND agpa < 9 THEN
+             dbms_output.put_line('Grade: A');
+     ELSIF agpa >= 9 THEN
+             dbms_output.put_line('Grade: A+');
+     END IF;
+   END LOOP;
+   END;
+   /
+
+5.
+
+//ALTER TABLE 
+--> ALTER TABLE STUDENTTABLE
+  2  ADD (LETTERGRADE VARCHAR2(2));
+
+ DECLARE
+      roll_no studentTable.RollNo%Type;
+        agpa studentTable.GPA%Type;
+   LETTER_GRADE VARCHAR2(2);
+    BEGIN
+    FOR roll_no IN 1..5 LOOP
+     select gpa into agpa from studentTable where roll_no=RollNo;
+         if agpa < 4 THEN
+        LETTER_GRADE := 'f';
+   ELSIF AgPA >= 4 AND Agpa < 5 THEN
+   LETTER_GRADE := 'E';
+  ELSIF agpa >= 5 AND agpa < 6 THEN
+   LETTER_GRADE := 'D';
+   ELSIF agpa >= 6 AND agpa < 7 THEN
+   LETTER_GRADE := 'C';
+   ELSIF agpa >= 7 AND agpa < 8 THEN
+   LETTER_GRADE := 'B';
+ELSIF agpa >= 8 AND agpa < 9 THEN
+LETTER_GRADE := 'A';
+ELSIF agpa >= 9 THEN
+         LETTER_GRADE := 'A+';
+END IF;
+   
+  update studentTable
+  set LETTERGRADE = LETTER_GRADE
+ WHERE roll_no=RollNo;
+  end loop;
+  end;
+   /
+
+--> 
+SQL> SELECT *
+  2  FROM STUDENTTABLE;
+
+6.
+ DECLARE
+   ROLL NUMBER;
+  agpa studentTable.GPA%Type;
+   maxgpa studentTable.GPA%Type :=0;
+  BEGIN
+  FOR i in 1..5 LOOP
+   select gpa into agpa from studentTable where rolLNO = i;
+    IF agpa > maxgpa then
+   maxgpa :=agpa;
+   END IF;
+   end loop;
+   select rollno into roll from studenttable where gpa = maxgpa;
+  dbms_output.put_line('max gpa is of rollno ' || roll);
+  end;
+/
+
+7.
+
+SQL> DECLARE
+  2  ROLL :=1
+  3  agpa studentTable.GPA%Type;
+  4   LETTER_GRADE VARCHAR2(2);
+  5  BEGIN
+  6  <<loopstart>>
+  7  select gpa into agpa from studentTable where rollno=roll;
+  8  dbms_output.put_line('Roll No.: ' || roll);
+  9  if agpa < 4 then
+ 10  letter_grade := 'F';
+ 11  ELSIF AgPA >= 4 AND Agpa < 5 THEN
+ 12     LETTER_GRADE := 'E';
+ 13    ELSIF agpa >= 5 AND agpa < 6 THEN
+ 14     LETTER_GRADE := 'D';
+ 15     ELSIF agpa >= 6 AND agpa < 7 THEN
+ 16     LETTER_GRADE := 'C';
+ 17     ELSIF agpa >= 7 AND agpa < 8 THEN
+ 18     LETTER_GRADE := 'B';
+ 19  ELSIF agpa >= 8 AND agpa < 9 THEN
+ 20  LETTER_GRADE := 'A';
+ 21  ELSIF agpa >= 9 THEN
+ 22           LETTER_GRADE := 'A+';
+ 23  end if;
+ 24  update studentTable set LetterGrade = letter_grade where rollno=rol
+l;
+ 25  roll := roll + 1;
+ 26     END LOOP;
+ 27     END;
+ 28     /
+
+
