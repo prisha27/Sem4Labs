@@ -1,0 +1,42 @@
+create table customer(
+	cid varchar(6) primary key,
+	cname varchar(30),
+	address varchar(30),
+	state varchar(4),
+	balance_due number
+);
+
+create table order1(
+	ono varchar(6) primary key,
+	order_date varchar(30),
+	cid varchar(6) references customer,
+	product_code varchar(6),
+	quantity integer
+);
+
+insert into customer values('C10001', 'Asnani Brothers', '243, 9-B', 'MP', 5000);
+insert into customer values('C10002', 'Singh Associates', 'E1,23', 'MP', 3000);
+insert into customer values('C10003', 'Gupta Sales', '100, G-Apart', 'HA', 1000);
+
+insert into order1 values('O1001', '11-Feb-2008 11:10:10 AM', 'C10001', 'CD0001', 10);
+insert into order1 values('O1004', '25-Mar-2009 01:23:34 PM', 'C10003', 'RF0002', 5);
+insert into order1 values('O1002', '12-Feb-2008 04:12:23 PM', 'C10001', 'TV0003', 20);
+insert into order1 values('O1003', '11-Feb-2008 06:20:15 PM', 'C10002', 'RF0001', 12);
+insert into order1 values('O1004', '25-Mar-2009 01:23:34 PM', 'C10003', 'TV0003', 11);
+
+--a 
+select cname from customer where balance_due > 4000;
+
+
+--b
+select cname, quantity from customer natural join order1
+where quantity in (
+	select min(quantity) from order1
+);
+
+--c
+with merged as (
+	select * from customer natural join order1
+)
+select A.ono, A.cname from merged A, merged B
+where A.cname not like B.cname and A.product_code like B.product_code;
