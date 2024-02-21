@@ -1,21 +1,31 @@
-SQL>create table Employee(
-emp_no number(5),
-emp_name varchar(20),
-emp_address varchar(40));
-SQL>insert into Employee values(101, 'abc', 'hyderabad');
+1. create table Employee(
+   emp_no number(5),
+   emp_name varchar(20),
+   emp_address varchar(40));
+
+insert into Employee values(101, 'abc', 'hyderabad');
 insert into Employee values(102, 'def', 'manipal');
 insert into Employee values(103, 'ghi', 'mangalore');
 insert into Employee values(104, 'jkl', 'delhi');
 insert into Employee values(105, 'mno', 'manipal');
+
 SQL>Select emp_name from Employee;
+
 SQL>Select * from Employee where emp_address='manipal';
+
 SQL>Alter table Employee add (salary number(6));
+
 SQL>Update Employee set salary=10000 where emp_address='hyderabad'
 Update Employee set salary=11000 where emp_address='manipal';
 Update Employee set salary=12000 where emp_address='delhi';
-Update Employee set salary=13000 where emp_address='mangalore';
+Update Employee set salary=13000 where emp_address='mangalore'; 
+
+SQL>DESC employee;
+
 SQL>Delete from Employee where emp_address='mangalore';
+
 SQL>Rename Employee to Employee1;
+
 SQL>drop table Employee1;
 
 
